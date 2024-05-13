@@ -2,34 +2,34 @@
 #include <PubSubClient.h>
 #include <Ultrasonic.h>
 
-Ultrasonic ultrasonic(5,4);
+Ultrasonic ultrasonic(5, 4);
 
-#define wifi_ssid         "Xiaomi_2F86"
-#define wifi_password     "95418086478750819950"
+#define wifi_ssid "Xiaomi_2F86"
+#define wifi_password "95418086478750819950"
 
-#define mqtt_server       "192.168.18.200"
-#define mqtt_clientid     "ULTRASONIC"
+#define mqtt_server "192.168.18.200"
+#define mqtt_clientid "ULTRASONIC"
 
-#define distance_topic    "my_topic"                      // Distance between sensor and surface (cm)
+#define distance_topic "my_topic"                          // Distance between sensor and surface (cm)
 #define water_level_topic "Home/Garden/Cistern/WaterLevel" // Water level (cm)
-#define fill_level_topic  "Home/Garden/Cistern/FillLevel"  // Fill level of the cistern (%)
-#define content_topic     "Home/Garden/Cistern/Content"     // Content of the cistern (Liters)
+#define fill_level_topic "Home/Garden/Cistern/FillLevel"   // Fill level of the cistern (%)
+#define content_topic "Home/Garden/Cistern/Content"        // Content of the cistern (Liters)
 
-int distance_empty = 142;    // Distance between sensor and cistern bottom
-float water_max = 132;       // Max. water level (distance from bottom to top edge of siphon)
-int total_content = 5000;    // Maximum total content of the cistern in liters
+int distance_empty = 142; // Distance between sensor and cistern bottom
+float water_max = 132;    // Max. water level (distance from bottom to top edge of siphon)
+int total_content = 5000; // Maximum total content of the cistern in liters
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-void setup() 
+void setup()
 {
     Serial.begin(115200);
     setup_wifi();
     client.setServer(mqtt_server, 1883);
 }
 
-void setup_wifi() 
+void setup_wifi()
 {
     delay(10);
     // We start by connecting to a WiFi network
@@ -39,7 +39,7 @@ void setup_wifi()
     WiFi.mode(WIFI_STA);
     WiFi.begin(wifi_ssid, wifi_password);
 
-    while (WiFi.status() != WL_CONNECTED) 
+    while (WiFi.status() != WL_CONNECTED)
     {
         delay(500);
         Serial.print(".");
@@ -49,22 +49,22 @@ void setup_wifi()
     Serial.println("WiFi connected");
     Serial.println("IP address: ");
     Serial.println(WiFi.localIP());
- }
+}
 
-void reconnect()  
+void reconnect()
 {
     // Loop until we're reconnected
-    while (!client.connected()) 
+    while (!client.connected())
     {
         Serial.print("Attempting MQTT connection...");
         // Attempt to connect
         // If you do not want to use a username and password, change next line to
-        if (client.connect(mqtt_clientid)) 
-        //if (client.connect(mqtt_clientid, mqtt_user, mqtt_password)) {
+        if (client.connect(mqtt_clientid))
+        // if (client.connect(mqtt_clientid, mqtt_user, mqtt_password)) {
         {
             Serial.println("connected");
-        } 
-        else 
+        }
+        else
         {
             Serial.print("failed, rc=");
             Serial.print(client.state());
@@ -75,9 +75,9 @@ void reconnect()
     }
 }
 
-void loop() 
+void loop()
 {
-    if (!client.connected()) 
+    if (!client.connected())
     {
         reconnect();
     }
@@ -101,5 +101,5 @@ void loop()
     client.publish(fill_level_topic, String(fill_level).c_str(), true);
     client.publish(content_topic, String(content).c_str(), true);
     delay(1); // Check every 60.000 ms = 60 s = 1 min
-    //delay(10000); // Check every 10.000 ms = 10 s
+    // delay(10000); // Check every 10.000 ms = 10 s
 }
