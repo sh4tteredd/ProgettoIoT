@@ -8,16 +8,16 @@ Ultrasonic ultrasonic(5,4);
 #define wifi_password     "95418086478750819950"
 
 #define mqtt_server       "192.168.18.200"
-#define mqtt_clientid     "ULTRASUONI"
+#define mqtt_clientid     "ULTRASONIC"
 
-#define abstand_topic     "mio_topic"     //Abstand zwischen Sensor und Oberfläche (cm)
-#define wasserstand_topic "Haus/Garten/Zisterne/Wasserstand" //Wasserstand (cm)
-#define fuellstand_topic  "Haus/Garten/Zisterne/Fuellstand"  //Füllstand der Zisterne (%)
-#define inhalt_topic      "Haus/Garten/Zisterne/Inhalt"      //Füllstand der Zisterne (Liter)
+#define distance_topic    "my_topic"                      // Distance between sensor and surface (cm)
+#define water_level_topic "Home/Garden/Cistern/WaterLevel" // Water level (cm)
+#define fill_level_topic  "Home/Garden/Cistern/FillLevel"  // Fill level of the cistern (%)
+#define content_topic     "Home/Garden/Cistern/Content"     // Content of the cistern (Liters)
 
-int distanz_leer = 142;  // Distanz zwischen Sensor und Zisternenboden
-float wasser_max = 132;  // Max. Wasserstand (Distanz Boden bis Oberkante Siffon)
-int gesamtinhalt = 5000; // Maximaler Gesamtinhalt der Zisterne in Litern
+int distance_empty = 142;    // Distance between sensor and cistern bottom
+float water_max = 132;       // Max. water level (distance from bottom to top edge of siphon)
+int total_content = 5000;    // Maximum total content of the cistern in liters
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -82,24 +82,24 @@ void loop()
         reconnect();
     }
     client.loop();
-    int Abstand = ultrasonic.distanceRead();
-    int Wasserstand = distanz_leer - Abstand;
-    int fuellstand = (Wasserstand/wasser_max) * 100;
-    int inhalt = (gesamtinhalt/100)*fuellstand;
+    int Distance = ultrasonic.distanceRead();
+    int WaterLevel = distance_empty - Distance;
+    int fill_level = (WaterLevel / water_max) * 100;
+    int content = (total_content / 100) * fill_level;
     /*
-      Serial.println("Abstand cm: ");
-      Serial.println(Abstand);
-      Serial.println("Wasserstand cm: ");
-      Serial.println(Wasserstand);
-      Serial.println("Füllstand in Prozent: ");
-      Serial.println(fuellstand);
-      Serial.println("Inhalt in Liter: ");
-      Serial.println(inhalt);
+      Serial.println("Distance cm: ");
+      Serial.println(Distance);
+      Serial.println("Water level cm: ");
+      Serial.println(WaterLevel);
+      Serial.println("Fill level in percentage: ");
+      Serial.println(fill_level);
+      Serial.println("Content in Liters: ");
+      Serial.println(content);
     */
-    client.publish(abstand_topic, String(Abstand).c_str(), true);
-    client.publish(wasserstand_topic, String(Wasserstand).c_str(), true);
-    client.publish(fuellstand_topic, String(fuellstand).c_str(), true);
-    client.publish(inhalt_topic, String(inhalt).c_str(), true);
+    client.publish(distance_topic, String(Distance).c_str(), true);
+    client.publish(water_level_topic, String(WaterLevel).c_str(), true);
+    client.publish(fill_level_topic, String(fill_level).c_str(), true);
+    client.publish(content_topic, String(content).c_str(), true);
     delay(1); // Check every 60.000 ms = 60 s = 1 min
     //delay(10000); // Check every 10.000 ms = 10 s
 }
