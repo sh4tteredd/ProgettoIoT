@@ -9,6 +9,7 @@
 #define wifi_ssid "Xiaomi_2F86"
 #define wifi_password "95418086478750819950"
 #define mqtt_server "192.168.178.24"
+#define mqtt_clientid "TEMP_HUMIDITY"
 #define humidity_topic "sensor/humidity"
 #define temperature_celsius_topic "sensor/temperature_celsius"
 
@@ -37,7 +38,7 @@ void connectMQTT() {
   Serial.println("Connecting to MQTT...");
   client.setServer(mqtt_server, 1883);
   while (!client.connected()) {
-    if (client.connect("ESP8266Client")) {
+    if (client.connect(mqtt_clientid)) {
       Serial.println("Connected to MQTT broker");
     } else {
       Serial.print("Failed, rc=");
