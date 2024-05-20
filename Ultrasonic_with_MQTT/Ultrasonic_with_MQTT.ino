@@ -7,7 +7,7 @@ Ultrasonic ultrasonic(5, 4); //trig,echo d1,d2
 #define wifi_ssid "Xiaomi_2F86"
 #define wifi_password "95418086478750819950"
 
-#define mqtt_server "192.168.178.24"
+#define mqtt_server "192.168.91.200"
 #define mqtt_clientid "ULTRASONIC"
 
 #define distance_topic "Home/Distance"                          // Distance between sensor and surface (cm)
@@ -83,6 +83,7 @@ void loop()
     }
     client.loop();
     int Distance = ultrasonic.distanceRead();
+    Serial.println(Distance);
     int WaterLevel = distance_empty - Distance;
     int fill_level = (WaterLevel / water_max) * 100;
     int content = (total_content / 100) * fill_level;
@@ -96,7 +97,7 @@ void loop()
       Serial.println("Content in Liters: ");
       Serial.println(content);
     */
-    if(Distance <= 50){
+    if(Distance <= 21){
     client.publish(distance_topic, String(Distance).c_str(), true);
     client.publish(water_level_topic, String(WaterLevel).c_str(), true);
     client.publish(fill_level_topic, String(fill_level).c_str(), true);
