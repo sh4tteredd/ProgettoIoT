@@ -9,6 +9,7 @@ MQTT_BROKER = "localhost"
 MQTT_PORT = 1883
 MQTT_TOPIC_HUMIDITY = "sensor/humidity"
 MQTT_TOPIC_TEMPERATURE = "sensor/temperature_celsius"
+MQTT_TOPIC_DIRT_HUMIDITY = "sensor/dirt_humidity"
 
 # Configurazione InfluxDB
 INFLUXDB_URL = "http://localhost:8086"
@@ -22,7 +23,7 @@ write_api = client.write_api(write_options=SYNCHRONOUS)
 
 def on_connect(client, userdata, flags, rc):
     print(f"Connesso a MQTT Broker! Codice di risultato: {rc}")
-    client.subscribe([(MQTT_TOPIC_HUMIDITY, 0), (MQTT_TOPIC_TEMPERATURE, 0)])
+    client.subscribe([(MQTT_TOPIC_HUMIDITY, 0), (MQTT_TOPIC_TEMPERATURE, 0), (MQTT_TOPIC_DIRT_HUMIDITY, 0)])
 
 def on_message(client, userdata, msg):
     print(f"Messaggio ricevuto su {msg.topic}: {msg.payload.decode()}")
@@ -33,6 +34,8 @@ def on_message(client, userdata, msg):
         measurement = "humidity"
     elif msg.topic == MQTT_TOPIC_TEMPERATURE:
         measurement = "temperature"
+    elif msg.topic == MQTT_TOPIC_DIRT_HUMIDITY:
+        measurement = "dirt_humidity"
 
     try:
         # Tenta di parsare i dati come JSON

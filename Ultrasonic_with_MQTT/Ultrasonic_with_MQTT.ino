@@ -7,7 +7,7 @@ Ultrasonic ultrasonic(5, 4); //trig,echo d1,d2
 #define wifi_ssid "Xiaomi_2F86"
 #define wifi_password "95418086478750819950"
 
-#define mqtt_server "192.168.91.200"
+#define mqtt_server "192.168.143.200"
 #define mqtt_clientid "ULTRASONIC"
 
 #define distance_topic "Home/Distance"                          // Distance between sensor and surface (cm)
