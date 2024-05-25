@@ -8,7 +8,7 @@
 
 #define wifi_ssid "Xiaomi_2F86"
 #define wifi_password "95418086478750819950"
-#define mqtt_server "192.168.143.200"
+#define mqtt_server "192.168.215.200"
 #define mqtt_clientid "TEMP_HUMIDITY"
 #define humidity_topic "sensor/humidity"
 #define humidity_dirt_topic "sensor/dirt_humidity"

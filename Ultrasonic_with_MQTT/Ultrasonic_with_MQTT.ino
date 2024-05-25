@@ -7,13 +7,13 @@ Ultrasonic ultrasonic(5, 4); //trig,echo d1,d2
 #define wifi_ssid "Xiaomi_2F86"
 #define wifi_password "95418086478750819950"
 
-#define mqtt_server "192.168.143.200"
+#define mqtt_server "192.168.215.200"
 #define mqtt_clientid "ULTRASONIC"
 
 #define distance_topic "Home/Distance"                          // Distance between sensor and surface (cm)
-#define water_level_topic "Home/Garden/Cistern/WaterLevel" // Water level (cm)
-#define fill_level_topic "Home/Garden/Cistern/FillLevel"   // Fill level of the cistern (%)
-#define content_topic "Home/Garden/Cistern/Content"        // Content of the cistern (Liters)
+//#define water_level_topic "Home/Garden/Cistern/WaterLevel" // Water level (cm)
+//#define fill_level_topic "Home/Garden/Cistern/FillLevel"   // Fill level of the cistern (%)
+//#define content_topic "Home/Garden/Cistern/Content"        // Content of the cistern (Liters)
 
 int distance_empty = 142; // Distance between sensor and cistern bottom
 float water_max = 132;    // Max. water level (distance from bottom to top edge of siphon)
@@ -99,9 +99,9 @@ void loop()
     */
     if(Distance <= 21){
     client.publish(distance_topic, String(Distance).c_str(), true);
-    client.publish(water_level_topic, String(WaterLevel).c_str(), true);
-    client.publish(fill_level_topic, String(fill_level).c_str(), true);
-    client.publish(content_topic, String(content).c_str(), true);
+//    client.publish(water_level_topic, String(WaterLevel).c_str(), true);
+  //  client.publish(fill_level_topic, String(fill_level).c_str(), true);
+ //   client.publish(content_topic, String(content).c_str(), true);
     delay(100); // Check every 60.000 ms = 60 s = 1 min
     // delay(10000); // Check every 10.000 ms = 10 s
     }
